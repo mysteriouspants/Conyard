@@ -1,0 +1,94 @@
+//! Created by Chris Miller on 24 December 2009.
+//! Copyright 2010 FSDEV. Aw richts is pitten by.
+//! Updated to an ERB-based generator on 10 October 2011.
+//! This file is generated; modifying it is totally OK, but
+//! your modifications might get removed if this file is
+//! regenerated again.
+
+#include "<%= @outfile.pathmap("%f") %>.gen.h"
+
+float __<%= @name %>_growth = 2.0f;
+
+struct <%= @name %>* <%= @name %>_create(register size_t capacity) {
+    struct <%= @name %>* v = (struct <%= @name %>*)malloc(sizeof(struct <%= @name %>));
+    v->data = (<%= @type %>*)malloc(sizeof(<%= @type %>)*capacity);
+    v->length = 0;
+    v->capacity = capacity;
+    return v;
+}
+void <%= @name %>_free(struct <%= @name %>* v) {
+    free(v->data);
+    free(v);
+}
+void <%= @name %>_free_with_block(struct <%= @name %>* v, void(^block)(<%= @type %>)) {
+    for (size_t i=0; i<v->length; ++i)
+        block(v->data[i]);
+    free(v->data);
+    free(v);
+}
+void <%= @name %>_grow(struct <%= @name %>* v) {
+    register size_t new_capacity = v->capacity * __<%= @name %>_growth;
+    v-> data = (<%= @type %>*)realloc(v->data,
+        (size_t)(sizeof(<%= @type %>) * new_capacity));
+    v->capacity = new_capacity;
+}
+void <%= @name %>_grow_to(struct <%= @name %>* v, register size_t s) {
+    v->data = (<%= @type %>*)realloc(v->data, (size_t)(sizeof(<%= @type %>) * s));
+    v->capacity = s;
+}
+void <%= @name %>_shrink(struct <%= @name %>* v) {
+    <%= @name %>_grow_to(v, v->size);
+}
+void <%= @name %>_push_back(struct <%= @name %>* v, const <%= @type %> t) {
+    if (v->capacity <= v->length)
+        <%= @name %>_grow(v);
+    v->data[v->length ++] = t;
+}
+<%= @type %> <%= @name %>_pop_back(struct <%= @name %>* v) {
+    return v->data[-- v->length];
+}
+void <%= @name %>_insert(struct <%= @name %>* v,
+                         register const size_t idx,
+                         const <%= @type %> t) {
+    if(v->capacity <= v->length)
+        <%= @name %>_grow(v);
+    memmove(v->data+idx+1, v->data+idx, sizeof(t) * (v->length - idx));
+    ++ v->length;
+    v->data[idx] = t;
+}
+void <%= @name %>_insert_range(struct <%= @name %>* v,
+                               register const size_t idx,
+                               <%= @type %>* begin,
+                               <%= @type %>* end) {
+    register size_t a1 = end - begin;
+    register size_t a2 = a1 + v->length;
+    if(v->capacity <= a2)
+        <%= @name %>_grow_to(v, a2);
+    memmove(v->data+idx+a1, v->data+idx, sizeof(<%= @type %>) * (v->length - idx));
+    memcpy(v->data+idx, begin, sizeof(<%= @type %>) * a1);
+    v->length += a1;
+}
+void <%= @name %>_remove_range(struct <%= @name %>* v,
+                               register const size_t begin,
+                               register const size_t end) {
+    <%= @type %>* tmp = (<%= @type %>*)calloc(v->length - end, sizeof(<%= @type %>));
+    memcpy(tmp, v->data+end, sizeof(<%= @type %>) * (v->length - end));
+    memcpy(v->data+begin, tmp, sizeof(<%= @type %>) * (v->length - end));
+    v->length -= end - begin;
+    free(tmp);
+}
+void <%= @name %>_remove_range_with_block(struct <%= @name %>* v,
+                                          register const size_t begin,
+                                          register const size_t end,
+                                          void(^block)(<%= @type %>)) {
+    <%= @type %>* tmp = (<%= @type %>*)calloc(v->length - end, sizeof(<%= @type %>));
+    memcpy(tmp, v->data+end, sizeof(<%= @type %>) * (v->length - end));
+    memcpy(v->data+begin, tmp, sizeof(<%= @type %>) * (v->length - end));
+    for (register size_t i=0; i<v->length-end; ++i)
+        block(tmp[i]);
+    v->length -= end - begin;
+    free(tmp);
+}
+void <%= @name %>_remove(struct <%= @name %>* v, register const size_t idx) {
+    <%= @name %>_remove_range(v, idx, idx+1);
+}

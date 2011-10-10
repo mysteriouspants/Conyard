@@ -1,0 +1,44 @@
+//! Created by Chris Miller on 24 December 2009.
+//! Copyright 2010 FSDEV. Aw richts is pitten by.
+//! Updated to an ERB-based generator on 10 October 2011.
+//! This file is generated; modifying it is totally OK, but
+//! your modifications might get removed if this file is
+//! regenerated again (ie. automated build tools).
+
+#ifndef __<%= @guard %>_H__
+#define __<%= @guard %>_H__
+
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
+
+/**
+ * This defines how much the vector will grow when it needs to expand. By default, this is `2.0f`.
+ */    
+extern
+float __<%= @name %>_growth;
+
+struct <%= @name %> {
+    <%= @type %>* data;
+    union {
+        size_t length;
+        size_t size;
+    };
+    size_t capacity;
+};
+
+struct <%= @name %>* <%= @name %>_create(register size_t capacity);
+void <%= @name %>_free(struct <%= @name %>* v);
+void <%= @name %>_free_with_block(struct <%= @name %>* v, void(^block)(<%= @type %>));
+void <%= @name %>_grow(struct <%= @name %>* v);
+void <%= @name %>_grow_to(struct <%= @name %>* v, register size_t s);
+void <%= @name %>_shrink(struct <%= @name %>* v);
+void <%= @name %>_push_back(struct <%= @name %>* v, const <%= @type %> t);
+<%= @type %> <%= @name %>_pop_back(struct <%= @name %>* v);
+void <%= @name %>_insert(struct <%= @name %>* v, register const size_t idx, const <%= @type %> t);
+void <%= @name %>_insert_range(struct <%= @name %>* v, register const size_t idx, <%= @type %>* begin, <%= @type %>* end);
+void <%= @name %>_remove_range(struct <%= @name %>* v, register const size_t begin, register const size_t end);
+void <%= @name %>_remove_range_with_block(struct <%= @name %>* v, register const size_t begin, register const size_t end, void(^block)(<%= @type %>));
+void <%= @name %>_remove(struct <%= @name %>* v, register const size_t idx);
+
+#endif
