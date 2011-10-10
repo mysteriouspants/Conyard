@@ -1,3 +1,6 @@
+//! Created by Chris Miller on 10 October 2011.
+//! Copyright 2011 Chris Miller. All rights reserved.
+
 #include "int-vector.gen.h"
 
 #include <stdio.h>

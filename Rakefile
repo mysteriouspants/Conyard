@@ -1,3 +1,6 @@
+# Created on 10 October 2011.
+# Copyright 2011 Chris Miller. All rights reserved.
+
 require 'rubygems'
 require 'erb'
 
