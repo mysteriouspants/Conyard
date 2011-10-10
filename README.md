@@ -2,9 +2,10 @@
 
 Previously I have used absolutely evil C Preprocessor macros to generate code; this is a new experiment in using Ruby to generate such code.
 
-## vector
+## Vector
 
-Usage: `rake vector[name, type, file]`  
+Usage: `rake vector[name, type, file]`
+
 * `name` is the name of the vector in code.
 * `type` is the data type that the vector will contain.
 * `file` is the output location of the files to be generated.
