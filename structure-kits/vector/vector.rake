@@ -15,9 +15,11 @@ def emit_vector name, datatype, outfile
   ofi.close
 end
 
-desc "Creates a new fast, lean C vector implementation; useage is: rake vector[name, type, outfile]"
-task :vector, :name, :datatype, :outfile do |t, args|
-  args.with_defaults(:name => 'int_vector', :datatype => 'int', :outfile => 'int_vector')
+namespace :generate do
+  desc "Creates a new fast, lean C vector implementation; useage is: rake vector[name, type, outfile]"
+  task :vector, :name, :datatype, :outfile do |t, args|
+    args.with_defaults(:name => 'int_vector', :datatype => 'int', :outfile => 'int_vector')
   
-  emit_vector args.name, args.datatype, File.expand_path(args.outfile)
+    emit_vector args.name, args.datatype, File.expand_path(args.outfile)
+  end
 end
