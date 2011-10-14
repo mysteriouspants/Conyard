@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'rubygems' if RUBY_VERSION < '1.9'
+require 'rake'
+
+Dir.chdir File.expand_path(File.join(File.dirname(__FILE__),'..'))
+
+Rake.application.run

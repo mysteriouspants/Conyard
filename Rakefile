@@ -5,10 +5,6 @@ require 'rubygems' if RUBY_VERSION < '1.9'
 require 'rake'
 require 'erb'
 
-templates_path = 'templates'
-test_source_path = 'tests'
-test_products_path = 'bin'
-
 $CC = 'clang'
 $CXX = 'clang++'
 
