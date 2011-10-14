@@ -3,7 +3,8 @@
 
 //! This file is generated; modifying it is totally OK, but
 //! your modifications might get removed if this file is
-//! regenerated again.
+//! regenerated again. I would suggest putting re-implementations
+//! and/or extensions in another file.
 
 #ifndef __<%= @guard %>_H__
 #define __<%= @guard %>_H__
@@ -27,7 +28,7 @@ struct <%= @name %> {
     size_t capacity;
 };
 
-struct <%= @name %>* <%= @name %>_create(register size_t capacity);
+struct <%= @name %>* <%= @name %>_create(const register size_t capacity);
 void <%= @name %>_free(struct <%= @name %>* v);
 void <%= @name %>_free_with_block(struct <%= @name %>* v, void(^block)(<%= @type %>));
 void <%= @name %>_grow(struct <%= @name %>* v);
