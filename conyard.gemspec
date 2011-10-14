@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'conyard'
-  s.version     = '0.1.2'
+  s.version     = '0.1.3'
   s.summary     = 'Generators for typing-intensive programming tasks.'
   s.description = 'Conyard is a Ruby experiment in generating source code for use by C, C++, and Objective-C projects. It is designed to reduce the amount of typing (and therefore errors) introduced by sleep-deprived programmers.'
 
@@ -17,13 +17,13 @@ Gem::Specification.new do |s|
   s.executables        = ['conyard']
   
   s.files = [
-    'tests/vector/vector_test.c',
-    'tests/vector/vector_test.rake',
+    'structure-kits/vector/vector.c.erb',
+    'structure-kits/vector/vector.h.erb',
+    'structure-kits/vector/vector.rake',
     'bin/conyard',
     'Rakefile',
     'README.md',
     'COPYING.md' ]
-  s.files << Dir.glob("structure-kits/**/*.*")
 
   s.add_dependency('rake')
 end

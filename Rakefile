@@ -4,7 +4,6 @@
 require 'rubygems' if RUBY_VERSION < '1.9'
 require 'rake'
 require 'erb'
-require 'yaml'
 
 $CC = 'clang'
 $CXX = 'clang++'
