@@ -14,5 +14,5 @@ Dir.glob('**/*.rake').each { |r| import r }
 
 desc 'Runs a task using a file for arguments'
 task :generate, :argfile do
-  
+  # Some idea I had of doing stuff from config files
 end
