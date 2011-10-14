@@ -4,6 +4,7 @@
 require 'rubygems' if RUBY_VERSION < '1.9'
 require 'rake'
 require 'erb'
+require 'yaml'
 
 $CC = 'clang'
 $CXX = 'clang++'
@@ -13,6 +14,13 @@ CLEAN = FileList['.o']
 Dir.glob('**/*.rake').each { |r| import r }
 
 desc 'Runs a task using a file for arguments'
-task :generate, :argfile do
-  # Some idea I had of doing stuff from config files
+task :run, :argfile do |t, args|
+  argfile=args.argfile
+  raise 'Dude, no argument? You jerk!' unless argfile
+  config=File.read(File.expand_path(argfile))
+  lines = Array.new
+  config.each_line { |line| lines << line.strip }
+  tn = lines[0]
+  lines = lines[1 .. -1]
+  Rake::Task[tn].invoke *lines
 end
