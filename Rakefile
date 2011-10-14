@@ -1,15 +1,13 @@
 # Created on 10 October 2011.
 # Copyright 2011 Chris Miller. All rights reserved.
 
-require 'rubygems'
+require 'rubygems' if RUBY_VERSION < '1.9'
+require 'rake'
 require 'erb'
 
 templates_path = 'templates'
 test_source_path = 'tests'
 test_products_path = 'bin'
-
-vector_header_template = 'vector.h.erb'
-vector_implem_template = 'vector.c.erb'
 
 $CC = 'clang'
 $CXX = 'clang++'

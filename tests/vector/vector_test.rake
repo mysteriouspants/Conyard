@@ -1,9 +1,9 @@
 task :test_vector do
-  rm 'tests/vector/int_vector.gen.h'
-  rm 'tests/vector/int_vector.gen.c'
-  Rake::Task["vector"].invoke 'int_vector', 'int', 'tests/vector/int_vector'
-  sh "#{$CC} -x c -arch x86_64 -c tests/vector/int_vector.gen.c -o bin/int_vector.gen.o"
-  sh "#{$CC} -x c -arch x86_64 -c tests/vector/vector_test.c -o bin/vector_test.o"
-  sh "#{$CC} -arch x86_64 -o bin/vector bin/vector_test.o bin/int_vector.gen.o"
-  sh "bin/vector"
+  emit_vector 'int_vector', 'int', 'tests/vector/int_vector'
+  src = [ 'tests/vector/int_vector.gen.c', 'tests/vector/vector_test.c' ]
+  src.each do |src_file|
+    sh "#{$CC} -x c -arch x86_64 -std=gnu99 -fblocks -c #{File.expand_path src_file} -o #{File.expand_path 'bin/'+src_file.pathmap('%n')}.o"
+  end
+  sh "#{$CC} -arch x86_64 -o #{File.expand_path 'bin/vector'} #{File.expand_path 'bin/int_vector.gen.o'} #{File.expand_path 'bin/vector_test.o'}"
+  sh File.expand_path('bin/vector')
 end

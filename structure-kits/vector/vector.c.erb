@@ -8,6 +8,10 @@
 
 #include "<%= @outfile.pathmap("%f") %>.gen.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 float __<%= @name %>_growth = 2.0f;
 
 struct <%= @name %>* <%= @name %>_create(const register size_t capacity) {
@@ -93,3 +97,7 @@ void <%= @name %>_remove_range_with_block(struct <%= @name %>* v,
 void <%= @name %>_remove(struct <%= @name %>* v, register const size_t idx) {
     <%= @name %>_remove_range(v, idx, idx+1);
 }
+
+#ifdef __cplusplus
+}
+#endif

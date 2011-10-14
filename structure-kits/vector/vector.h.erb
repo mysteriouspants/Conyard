@@ -13,6 +13,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * This defines how much the vector will grow when it needs to expand. By default, this is `2.0f`.
  */    
@@ -41,5 +45,9 @@ void <%= @name %>_insert_range(struct <%= @name %>* v, register const size_t idx
 void <%= @name %>_remove_range(struct <%= @name %>* v, register const size_t begin, register const size_t end);
 void <%= @name %>_remove_range_with_block(struct <%= @name %>* v, register const size_t begin, register const size_t end, void(^block)(<%= @type %>));
 void <%= @name %>_remove(struct <%= @name %>* v, register const size_t idx);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
