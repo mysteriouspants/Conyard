@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'conyard'
-  s.version     = '0.1.1'
+  s.version     = '0.1.2'
   s.summary     = 'Generators for typing-intensive programming tasks.'
   s.description = 'Conyard is a Ruby experiment in generating source code for use by C, C++, and Objective-C projects. It is designed to reduce the amount of typing (and therefore errors) introduced by sleep-deprived programmers.'
 
