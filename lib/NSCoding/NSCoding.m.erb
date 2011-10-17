@@ -1,0 +1,82 @@
+//! Created by Chris Miller on 17 October 2011.
+//! Copyright 2011 Chris Miller. All rights reserved.
+
+//! This file is generated; you are supposed to take the output and paste it
+//! into your own source code files. This is a boilerplate code generator, not
+//! a standalone object.
+
+/*-----------------------------------------------------------------------------\
+|                                PREFIX HEADER                                 |
+| These definitions belong in your project's prefix header. I use them to ens- |
+| re consistency across model changes, and are used by all the code I generate |
+| You may safely change the values in the two error messages, but the serial   |
+| version key should not be changed.                                                                                     |
+\-----------------------------------------------------------------------------*/
+
+#define kSerialVersionKey @"SerialVersionId"
+#define kUnkeyedCodingError @"Unkeyed Coder Detected!"
+#define kUnknownSerialVersionId @"Unknown Serial Version ID Detected!"
+
+/*-----------------------------------------------------------------------------\
+|                     IMPLEMENTATION FILE - AFTER IMPORTS                                            |
+| This define is local to the implementation file, and you should increment it |
+| whenever your schema changes so you can write a migration deserialization in |
+| the case block in initWithCoder:                                             |
+\-----------------------------------------------------------------------------*/
+
+#define kSerialVersionId 0
+
+/*-----------------------------------------------------------------------------\
+|                   IMPLEMENTATION FILE - BEFORE SYNTHESIZE                    |
+| I use this to ensure that the tag names are consistent and without any capa- |
+| city for typos. If you have the modify the generated code, it is wise to st- |
+| ick with the convention and use these defines, instead of introducing more   |
+| string literals into the code.                                               |
+\-----------------------------------------------------------------------------*/
+
+<% @ivars.each do |ivar, type| %>#define k<%= ivar.to_s.cap_first_letter %> @"<%= ivar %>"
+<% end %>
+
+/*-----------------------------------------------------------------------------\
+|      IMPLEMENTATION FILE - ANYWHERE IN IMPLEMENTATION AFTER SYNTHESIZE       |
+| This is the actual serialization boilerplate code. Modify this for any spec- |
+| ial case handling you may have.                                              |
+\-----------------------------------------------------------------------------*/
+
+#pragma mark NSCoding
+
+- (id)initWithCoder:(NSCoder*)aDecoder
+{
+    self = [self init];
+    if (self) {
+        if (![aDecoder allowsKeyedCoding])
+            [NSException raise:kUnkeyedCodingError
+                        format:@"I cannot instaniciate an %@ from an unkeyed coder!", NSStringFromClass([self class])];
+        
+        int64_t svid = [aDecoder decodeInt64ForKey:kSerialVersionKey];
+        switch (svid) {
+            case kSerialVersionId: // the current version
+                <% @ivars.each do |ivar, type| %>self.<%= ivar %> = [aDecoder decode<%= type.to_s.cap_first_letter %>ForKey:k<%= ivar.to_s.cap_first_letter %>];
+                <% end %>
+                break;
+            default:
+                [NSException raise:kUnknownSerialVersionIdError
+                            format:@"I cannot instaniciate an %@ from an archive of version %d!", NSStringFromClass([self class]), svid];
+                break;
+        }
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder*)aCoder
+{
+    if (![aCoder allowsKeyedCoding])
+        [NSException raise:kUnkeyedCodingError
+                    format:@"I cannot serialize an %@ to an unkeyed coder!", NSStringFromClass([self class])];
+    
+    [aCoder encodeInt64:kSerialVersionId forKey:kSerialVersionKey];
+    
+    <% @ivars.each do |ivar, type| %>[aCoder encode<%= type.to_s.cap_first_letter %>:<%= ivar %> forKey:k<%= ivar.to_s.cap_first_letter %>];
+    <% end %>
+}
