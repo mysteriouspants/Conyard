@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.executables        = ['conyard-vector']
   
   s.files = [
-    'structure-kits/vector/vector.c.erb',
-    'structure-kits/vector/vector.h.erb',
+    'lib/vector/vector.c.erb',
+    'lib/vector/vector.h.erb',
     'bin/conyard-vector',
     'README.md',
     'COPYING.md' ]
