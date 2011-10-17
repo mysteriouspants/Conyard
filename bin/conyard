@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'rubygems' if RUBY_VERSION < '1.9'
-require 'rake'
-
-$OLDDIR = Dir.pwd
-Dir.chdir File.expand_path(File.join(File.dirname(__FILE__),'..'))
-
-Rake.application.run

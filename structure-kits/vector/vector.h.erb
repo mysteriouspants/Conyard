@@ -13,6 +13,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+<% @local_include_files.each do |includefile| %>
+#include "<%= includefile %>"
+<% end %>
+<% @global_include_files.each do |includefile| %>
+#include <<%= includefile %>>
+<% end %>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1,6 +1,6 @@
 namespace :test do
   task :vector do
-    Rake::Task['run'].invoke 'tests/vector/vector_test.genconfig'
+    sh "bin/conyard-vector generate int_vector int tests/vector/int_vector nil nil"
     src = [ 'tests/vector/int_vector.gen.c', 'tests/vector/vector_test.c' ]
     src.each do |src_file|
       sh "#{$CC} -x c -arch x86_64 -std=gnu99 -fblocks -c #{File.expand_path src_file} -o #{File.expand_path 'tests/vector/'+src_file.pathmap('%n')}.o"
