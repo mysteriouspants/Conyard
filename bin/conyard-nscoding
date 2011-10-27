@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+
+require 'rubygems' if RUBY_VERSION < '1.9'
+require 'thor'
+require 'erb'
+require File.join(File.dirname(__FILE__),'../lib/String')
+
+$OLDDIR = Dir.pwd
+Dir.chdir File.expand_path(File.join(File.dirname(__FILE__),'..'))
+
+class NSCoding < Thor
+  
+  desc 'generate OUTFILE ivar:type,ivar:type,...', "Makes a new NSCoding stubfile"
+  def generate(outfile, ivars)
+    @outfile = File.expand_path(outfile) or raise "Outfile cannot be nil"
+    @ivars = Hash.new
+    ivars.split(/,\s*/).each do |ivar|
+      type, ivar = ivar.split ':'
+      @ivars[type.intern] = ivar
+    end
+    raise 'No ivars!' if @ivars.empty?
+    
+    puts "Generating NSCoding stubs:"
+    puts "  outfile: #{@outfile}"
+    puts "  ivars:"
+    @ivars.each do |ivar, type|
+      puts "    #{ivar}: #{type}"
+    end
+    
+    of=File.new(@outfile, "w")
+    of.write(ERB.new(File.read('lib/NSCoding/NSCoding.m.erb')).result(binding))
+    of.close
+  end
+  
+end
+
+NSCoding.start

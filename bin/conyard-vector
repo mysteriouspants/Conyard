@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+require 'rubygems' if RUBY_VERSION < '1.9'
+require 'thor'
+require 'erb'
+
+$OLDDIR = Dir.pwd
+Dir.chdir File.expand_path(File.join(File.dirname(__FILE__),'..'))
+
+class Vector < Thor
+
+  desc "generate NAME TYPE OUTFILE LOCALFILES GLOBALFILES", "Makes a new vector"
+  def generate(name, datatype, outfile, local_include_files, global_include_files)
+    @name = name or raise "Vector name cannot be nil"
+    @type = datatype or raise "Data type cannot be nil"
+    @outfile = File.expand_path(outfile) or raise "Outfile cannot be nil"
+    @guard = File.split(outfile).last.gsub(/\-/,'_').upcase
+    @include = File.split(@outfile).last
+    @local_include_files = local_include_files.match(/^nil$/) ? Array.new : local_include_files.split(/,\s*/)
+    @global_include_files = global_include_files.match(/^nil$/) ? Array.new : global_include_files.split(/,\s*/)
+
+    puts "Generating Vector:"
+    puts "  name: #{@name}"
+    puts "  type: #{@type}"
+    puts "  file: #{@outfile}"
+    puts "  local includes: #{@local_include_files}"
+    puts "  global includes: #{@global_include_files}"
+
+    ofh=File.new(@outfile+".gen.h", "w")
+    ofh.write(ERB.new(File.read('lib/vector/vector.h.erb')).result(binding))
+    ofh.close
+  
+    ofi=File.new(@outfile+".gen.c", "w")
+    ofi.write(ERB.new(File.read('lib/vector/vector.c.erb')).result(binding))
+    ofi.close
+  end
+  
+end
+
+Vector.start
